@@ -1,8 +1,8 @@
-var KyberCall = artifacts.require("./KyberCall.sol");
-var KyberCallWithTrade = artifacts.require("./KyberCallWithTrade.sol");
+var KyberEthConverter = artifacts.require("./KyberEthConverter.sol");
+
 
 
 module.exports = function(deployer) {
   // deployer.deploy(KyberCall);
-  deployer.deploy(KyberCallWithTrade);
+  deployer.deploy(KyberEthConverter);
 };
