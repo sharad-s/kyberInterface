@@ -1,20 +1,21 @@
 pragma solidity ^0.4.19;
 
-import "./interfaces/IERC20.sol";
 import "./interfaces/IKyberNetwork.sol";
+import "zeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
-contract KyberETHConverter  {
+
+contract KyberETHConverter is StandardToken {
 
     //Global Variables
     IKyberNetwork public kyberRopsten;
-    IERC20 public kETH;
+    StandardToken public kETH;
     uint public MAX_UINT;
 
     //Events
     event ExecuteTrade(
       address indexed sender,
-      IERC20 src,
-      IERC20 dest,
+      StandardToken src,
+      StandardToken dest,
       uint srcAmount,
       uint destAmount);
 
@@ -22,7 +23,7 @@ contract KyberETHConverter  {
         // kyber network on ropsten
         kyberRopsten = IKyberNetwork(0x0a56d8a49E71da8d7F9C65F95063dB48A3C9560B);
         // kyber's eth token
-        kETH = IERC20(0x00eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee);
+        kETH = StandardToken(0x00eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee);
         MAX_UINT = 2**256 - 1;
     }
 
@@ -37,12 +38,12 @@ contract KyberETHConverter  {
       NOTE 157401 gas was used on a second test of this updated code.
       ^ txHash: 0xc78017dd9246bb2701460f8f6fd57ecdcd612e5efb57ba83d5aedbf6b1c90752
      */
-    function convertFromETH(IERC20 _destToken) public payable {
+    function convertFromETH(StandardToken _destToken) public payable {
         // we will convert all of the eth sent in
         uint srcAmount = msg.value;
 
         // wrap the destination token in an ERC20 interface
-        IERC20 destToken = IERC20(_destToken);
+        StandardToken destToken = StandardToken(_destToken);
 
         // we will send resulting tokens back to the caller
         address destAddress = msg.sender;
@@ -56,7 +57,6 @@ contract KyberETHConverter  {
     }
 
 
-
     /* getConversionRates
       @notice use token address kETH for ether
       @dev retrieves expected conversion rate and slippage rate between ETH and any token listed on kyber
@@ -64,7 +64,7 @@ contract KyberETHConverter  {
       @return expectedRate -> expected conversion rate between ETH and token
       @return slippageRate -> expected conversion rate accounting for slippage
     */
-    function getConversionRates(IERC20 _destToken) public view returns (uint expectedRate, uint slippageRate) {
+    function getConversionRates(StandardToken _destToken) public view returns (uint expectedRate, uint slippageRate) {
         //set parameter srcQty to 1 for now
         //we will get the coversion rate between ETH and _destToken
         return kyberRopsten.getExpectedRate(kETH, _destToken, 1);
