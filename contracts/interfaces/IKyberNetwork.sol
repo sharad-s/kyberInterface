@@ -1,12 +1,13 @@
 pragma solidity ^0.4.19;
 
-import "./IERC20.sol";
+import "zeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+
 
 interface IKyberNetwork {
    function trade(
-        IERC20 src,
+        StandardToken src,
         uint srcAmount,
-        IERC20 dest,
+        StandardToken dest,
         address destAddress,
         uint maxDestAmount,
         uint minConversionRate,
@@ -16,7 +17,7 @@ interface IKyberNetwork {
         payable
         returns(uint);
 
-    function getExpectedRate(IERC20 src, IERC20 dest, uint srcQty)
+    function getExpectedRate(StandardToken src, StandardToken dest, uint srcQty)
         public view
         returns (uint expectedRate, uint slippageRate);
 }

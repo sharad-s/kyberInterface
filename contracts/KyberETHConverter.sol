@@ -43,7 +43,7 @@ contract KyberETHConverter is StandardToken {
         uint srcAmount = msg.value;
 
         // wrap the destination token in an ERC20 interface
-        StandardToken destToken = StandardToken(_destToken);
+        StandardToken destToken =  StandardToken(_destToken);
 
         // we will send resulting tokens back to the caller
         address destAddress = msg.sender;

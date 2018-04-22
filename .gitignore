@@ -1,3 +1,6 @@
 .DS_STORE
 build/**
 node_modules/**
+secrets.json
+infura.json
+yarn.lock
